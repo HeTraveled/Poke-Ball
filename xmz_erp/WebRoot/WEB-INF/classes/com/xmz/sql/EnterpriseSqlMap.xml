@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.EnterpriseDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+
+	<select id="findAllEnterprise" resultType="com.xmz.entity.Enterprise" flushCache="true">
+		select * from
+		enterprise
+	</select>
+	<select id="findByEnterpriseid" parameterType="int" resultType="com.xmz.entity.Enterprise" flushCache="true">
+		select * from enterprise where id=#{id}
+	</select>
+	<select id="findByEnterpriseName" parameterType="String" resultType="com.xmz.entity.Enterprise" flushCache="true">
+		select * from enterprise where name=#{name}
+	</select>
+	<select id="findByEnterpriseId" parameterType="int" resultType="com.xmz.entity.Job" flushCache="true">
+		<!-- 可实现快速操作，无需等待，，，，，，现在另一个问题出现了，返回就出现从新提交的问题 -->
+		<!-- select * from 查询的主表 as (附表名) left join 结果附表 (结果附表名) on 链接条件 where 
+			约束条件 -->
+		<!-- select * from enterprise_to_job etj left outer join job j on etj.enterprise_id=#{id} 
+			where etj.id = #{id} -->
+		select * from enterprise_to_job as e left join job j on e.job_id =j.id
+		where e.enterprise_id=#{id}
+	</select>
+	<select id="findByNameEnterprise" parameterType="String" resultType="com.xmz.entity.Enterprise" flushCache="true">
+		select * from enterprise where id=#{id}
+	</select>
+
+	<insert id="enterprise_save" parameterType="com.xmz.entity.Enterprise"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into enterprise
+		(id,name,phone,address,email,linkman)
+		values(#{id},#{name},#{phone},#{address},#{email},#{linkman})
+	</insert>
+
+	<delete id="enterprise_delete" parameterType="int">
+		DELETE e.* ,etj.*
+		FROM enterprise e
+		LEFT JOIN enterprise_to_job etj
+		ON e.id =
+		etj.enterprise_id
+		WHERE e.id = #{id}
+	</delete>
+<delete id="enterprise_job_delete" parameterType="int">
+	DELETE FROM enterprise_to_job WHERE id = #{id} 
+	</delete>
+
+	
+	<update id="EnterpriseUpdatexq" parameterType="com.xmz.entity.Enterprise">
+		update enterprise
+		<set>
+		<!-- 	<if test="name!=null">
+				name=#{name},
+			</if> -->
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="address!=null">
+				address=#{address},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+
+			<if test="linkman!=null">
+				linkman=#{linkman}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.CourseErpDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	
+	<select id="findCourseAll"  resultType="com.xmz.entity.Course" flushCache="true">
+		select * from course
+	</select>
+	<select id="findByCourseHackfan" parameterType="int" resultType="com.xmz.entity.Course" flushCache="true">
+		select * from course where id=#{id}
+	</select>
+	<select id="findByCourseName" parameterType="string" resultType="com.xmz.entity.Course" flushCache="true">
+		select * from course where name=#{name}
+	</select>
+	<select id="findByCourseId" parameterType="int" resultType="com.xmz.entity.Course" flushCache="true">
+		select * from course where id=#{id}
+	</select>
+
+
+	<insert id="coursesave" parameterType="com.xmz.entity.Course"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into course
+		(id,name)
+		values(#{id},#{name})
+	</insert>
+	<delete id="coursedelete" parameterType="int">
+		delete from course where id=#{id}
+	</delete>
+	<update id="courseupdate" parameterType="com.xmz.entity.Course">
+		update course
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="coursupdatexq" parameterType="com.xmz.entity.Course">
+		update course
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+		<insert id="major_to_course_binding" parameterType="com.xmz.entity.Major_to_course"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO major_to_course SET
+		major_id = #{major_id}, course_id =#{course_id}
+	</insert>
+
+
+</mapper>

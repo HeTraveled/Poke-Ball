@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.AdminDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="60000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	<select id="findAll" resultType="com.xmz.entity.Admin"  flushCache="true">
+		select * from admin
+	</select>
+	<select id="findByName" parameterType="string" resultType="com.xmz.entity.Admin"  flushCache="true">
+		select * from admin where username=#{username}
+	</select>
+	<select id="findByHackfan" parameterType="string" resultType="com.xmz.entity.Admin"  flushCache="true">
+		select * from admin where username=#{username}
+	</select>
+	<select id="findById" parameterType="int" resultType="com.xmz.entity.Admin"  flushCache="true">
+		select *
+		from admin where id=#{id}
+	</select>
+	<select id="findByPhone" parameterType="string" resultType="com.xmz.entity.Admin" flushCache="true">
+		select * from admin where phone=#{phone}
+	</select>
+
+	<insert id="save" parameterType="com.xmz.entity.Admin"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into admin
+		(id,username,password,phone)
+		values(#{id},#{username},#{password},#{phone})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from admin where
+		id=#{id}
+	</delete>
+	<update id="update" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="password!=null">
+				password=#{password}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="chmod" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="power_id!=null">
+				power_id=#{power_id}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="discover" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="password!=null">
+				password=#{password}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="updatexq" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="idCard!=null">
+				idCard=#{idCard},
+			</if>
+			<if test="comment!=null">
+				comment=#{comment}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<update id="dynamicUpdate" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="username!=null">
+				username=#{username},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
+			<if test="power_id!=null">
+				power_id=#{power_id},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="comment!=null">
+				comment=#{comment},
+			</if>
+			<if test="ctime!=null">
+				ctime=#{ctime},
+			</if>
+			<if test="ltime!=null">
+				ltime=#{ltime},
+			</if>
+			<if test="ip!=null">
+				ip=#{ip}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>

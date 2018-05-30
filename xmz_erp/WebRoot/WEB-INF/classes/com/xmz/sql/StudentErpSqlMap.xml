@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.StudentErpDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	
+	<select id="findStudentAll" resultType="com.xmz.entity.Student" flushCache="true">
+		select * from student
+	</select>
+	<select id="findBStudentAll" parameterType="int" resultType="com.xmz.entity.Student" flushCache="true">
+		SELECT * FROM student WHERE id in(SELECT student_id FROM banji_to_student WHERE banji_id=#{id})
+	</select>
+	<select id="findByStudentHackfan" parameterType="int" resultType="com.xmz.entity.Student" flushCache="true">
+		select * from student where id=#{id}
+	</select>
+	<select id="findByStudentName" parameterType="string" resultType="com.xmz.entity.Student" flushCache="true">
+		select * from student where name=#{name}
+	</select>
+	<select id="findByStudentId" parameterType="int" resultType="com.xmz.entity.Student" flushCache="true">
+		select * from student where id=#{id}
+	</select>
+	
+	<insert id="studentsave" parameterType="com.xmz.entity.Student"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into student
+		(id,name,gender,age,nation,brithday,stuid,idCard,address,qq,phone,email,danger_phone)
+		values(#{id},#{name},#{gender},#{age},#{nation},#{brithday},#{stuid},#{idCard},#{address},#{qq}
+		,#{phone},#{email},#{danger_phone})
+	</insert>
+		<delete id="studentdelete" parameterType="int">
+		delete from student where id=#{id}
+	</delete>
+	<update id="studentupdate" parameterType="com.xmz.entity.Student">
+		update student
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="studentupdatexq" parameterType="com.xmz.entity.Student">
+		update student
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="gender!=null">
+				gender=#{gender},
+			</if>
+			<if test="nation!=null">
+				nation=#{nation},
+			</if>
+			<if test="brithday!=null">
+				brithday=#{brithday},
+			</if>
+			<if test="stuid!=null">
+				stuid=#{stuid},
+			</if>
+			<if test="idCard!=null">
+				idCard=#{idCard},
+			</if>
+			<if test="address!=null">
+				address=#{address},
+			</if>
+			<if test="qq!=null">
+				qq=#{qq},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="danger_phone!=null">
+				danger_phone=#{danger_phone},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+		<insert id="banji_to_student_binding" parameterType="com.xmz.entity.Banji_to_student"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO banji_to_student SET
+		banji_id = #{banji_id}, student_id =#{student_id}
+	</insert>
+	
+	
+	
+</mapper>

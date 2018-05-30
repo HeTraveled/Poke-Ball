@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.ErpDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	<select id="findAll" resultType="com.xmz.entity.Admin">
+		select * from admin
+	</select>
+	<select id="findMajorAll" resultType="com.xmz.entity.Major">
+		select * from major
+	</select>
+	<select id="findCourseAll" resultType="com.xmz.entity.Course">
+		select * from course
+	</select>
+	<select id="findStudentAll" resultType="com.xmz.entity.Student">
+		select * from student
+	</select>
+	<select id="findGradetAll" resultType="com.xmz.entity.Grade">
+		select * from grade
+	</select>
+	
+	<select id="findByName" parameterType="string" resultType="com.xmz.entity.Admin">
+		select * from admin where username=#{username}
+	</select>
+	
+	<select id="findByHackfan" parameterType="string" resultType="com.xmz.entity.Admin">
+		select * from admin where username=#{username}
+	</select>
+
+	<select id="findByMajorHackfan" parameterType="string" resultType="com.xmz.entity.Major">
+		select * from major where name=#{name}
+	</select>
+	<select id="findByCourseHackfan" parameterType="string" resultType="com.xmz.entity.Course">
+		select * from course where name=#{name}
+	</select>
+	<select id="findByStudentHackfan" parameterType="int" resultType="com.xmz.entity.Student">
+		select * from student where id=#{id}
+	</select>
+	<select id="findByGradeHackfan" parameterType="int" resultType="com.xmz.entity.Grade">
+		select * from grade where id=#{id}
+	</select>
+	<select id="findById" parameterType="int" resultType="com.xmz.entity.Admin">
+		select *
+		from admin where id=#{id}
+	</select>
+	<select id="findByMajorName" parameterType="string" resultType="com.xmz.entity.Major">
+		select * from major where name=#{name}
+	</select>
+	<select id="findByMajorId" parameterType="int" resultType="com.xmz.entity.Major">
+		select * from major where id=#{id}
+	</select>
+	<select id="findByCourseName" parameterType="string" resultType="com.xmz.entity.Course">
+		select * from course where name=#{name}
+	</select>
+	<select id="findByCourseId" parameterType="int" resultType="com.xmz.entity.Course">
+		select * from course where id=#{id}
+	</select>
+	<select id="findByStudentName" parameterType="string" resultType="com.xmz.entity.Student">
+		select * from student where name=#{name}
+	</select>
+	<select id="findByStudentId" parameterType="int" resultType="com.xmz.entity.Student">
+		select * from student where id=#{id}
+	</select>
+	<select id="findByGradeName" parameterType="string" resultType="com.xmz.entity.Grade">
+		select * from grade where name=#{name}
+	</select>
+	<select id="findByGradeId" parameterType="int" resultType="com.xmz.entity.Grade">
+		select * from grade where id=#{id}
+	</select>
+
+	<insert id="save" parameterType="com.xmz.entity.Admin"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into admin
+		(id,username,password,phone)
+		values(#{id},#{username},#{password},#{phone})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from admin where id=#{id}
+	</delete>
+
+	<update id="update" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="password!=null">
+				password=#{password}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="chmod" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="power_id!=null">
+				power_id=1
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="updatexq" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="username!=null">
+				username=#{username},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="idCard!=null">
+				idCard=#{idCard},
+			</if>
+			<if test="comment!=null">
+				comment=#{comment}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="dynamicUpdate" parameterType="com.xmz.entity.Admin">
+		update admin
+		<set>
+			<if test="username!=null">
+				username=#{username},
+			</if>
+			<if test="password!=null">
+				password=#{password},
+			</if>
+			<if test="power_id!=null">
+				power_id=#{power_id},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="comment!=null">
+				comment=#{comment},
+			</if>
+			<if test="ctime!=null">
+				ctime=#{ctime},
+			</if>
+			<if test="ltime!=null">
+				ltime=#{ltime},
+			</if>
+			<if test="ip!=null">
+				ip=#{ip}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<insert id="majorsave" parameterType="com.xmz.entity.Major"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into major
+		(id,name)
+		values(#{id},#{name})
+	</insert>
+	<delete id="majordelete" parameterType="int">
+		delete from major where id=#{id}
+	</delete>
+	<update id="majorupdate" parameterType="com.xmz.entity.Major">
+		update major
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<insert id="coursesave" parameterType="com.xmz.entity.Course"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into course
+		(id,name)
+		values(#{id},#{name})
+	</insert>
+	<delete id="coursedelete" parameterType="int">
+		delete from course where id=#{id}
+	</delete>
+	<update id="courseupdate" parameterType="com.xmz.entity.Course">
+		update course
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="coursupdatexq" parameterType="com.xmz.entity.Course">
+		update course
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	<insert id="studentsave" parameterType="com.xmz.entity.Student"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into student
+		(id,name,gender,age,nation,brithday,stuid,idCard,address,qq,phone,email,danger_phone)
+		values(#{id},#{name},#{gender},#{age},#{nation},#{brithday},#{stuid},#{idCard},#{address},#{qq}
+		,#{phone},#{email},#{danger_phone})
+	</insert>
+		<delete id="studentdelete" parameterType="int">
+		delete from student where id=#{id}
+	</delete>
+	<update id="studentupdate" parameterType="com.xmz.entity.Student">
+		update student
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="studentupdatexq" parameterType="com.xmz.entity.Student">
+		update student
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="gender!=null">
+				gender=#{gender},
+			</if>
+			<if test="nation!=null">
+				nation=#{nation},
+			</if>
+			<if test="brithday!=null">
+				brithday=#{brithday},
+			</if>
+			<if test="stuid!=null">
+				stuid=#{stuid},
+			</if>
+			<if test="idCard!=null">
+				idCard=#{idCard},
+			</if>
+			<if test="address!=null">
+				address=#{address},
+			</if>
+			<if test="qq!=null">
+				qq=#{qq},
+			</if>
+			<if test="phone!=null">
+				phone=#{phone},
+			</if>
+			<if test="email!=null">
+				email=#{email},
+			</if>
+			<if test="danger_phone!=null">
+				danger_phone=#{danger_phone},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	
+	<insert id="gradesave" parameterType="com.xmz.entity.Grade"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into grade
+		(id,name,banji)
+		values(#{id},#{name},#{banji})
+	</insert>
+	<delete id="gradedelete" parameterType="int">
+		delete from grade where id=#{id}
+	</delete>
+	<update id="gradeupdate" parameterType="com.xmz.entity.Grade">
+		update grade
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="gradeupdatexq" parameterType="com.xmz.entity.Grade">
+		update grade
+		<set>
+			<if test="name!=null">
+				name=#{name},
+			</if>
+			<if test="banji!=null">
+				banji=#{banji},
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+
+
+
+
+</mapper>

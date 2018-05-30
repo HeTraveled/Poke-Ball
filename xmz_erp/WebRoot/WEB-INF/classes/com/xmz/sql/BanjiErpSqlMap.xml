@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.BanjiErpDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	
+	<select id="findBanjiAll" resultType="com.xmz.entity.Banji" flushCache="true">
+		select * from banji
+	</select>
+	<select id="findM_BAll" parameterType="int" resultType="com.xmz.entity.Banji" flushCache="true">
+		SELECT * FROM banji WHERE id in(SELECT banji_id FROM major_to_banji WHERE major_id=#{id})
+	</select>
+	<select id="findByBanjiHackfan" parameterType="int" resultType="com.xmz.entity.Banji"  flushCache="true">
+		select * from banji where id=#{id}
+	</select>
+	<select id="findByBanjiName" parameterType="String" resultType="com.xmz.entity.Banji" flushCache="true">
+		select * from banji where name=#{name}
+	</select>
+	<select id="findByBanjiId" parameterType="int" resultType="com.xmz.entity.Banji" flushCache="true">
+		select * from banji where id=#{id}
+	</select>
+	<insert id="banjisave" parameterType="com.xmz.entity.Banji"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into banji
+		(id,name)
+		values(#{id},#{name})
+	</insert>
+	<delete id="banjidelete" parameterType="int">
+		delete from banji where id=#{id}
+	</delete>
+	<delete id="banjistudentdelete" parameterType="int">
+		delete from banji_to_student where id=#{id}
+	</delete>
+	<update id="banjiupdate" parameterType="com.xmz.entity.Banji">
+		update banji
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="banjiupdatexq" parameterType="com.xmz.entity.Banji">
+		update banji
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+<select id="findByBanjiid" parameterType="int" resultType="com.xmz.entity.Student" flushCache="true">
+		<!-- select * from 查询的主表 as (附表名) left join 结果附表 (结果附表名) on 链接条件 where 
+			约束条件 -->
+		<!-- select * from enterprise_to_job etj left outer join job j on etj.enterprise_id=#{id} 
+			where etj.id = #{id} -->
+		select * from banji_to_student as b left join student s on b.student_id =s.id
+		where b.banji_id=#{id}
+	</select>
+	
+		<insert id="major_to_banji_binding" parameterType="com.xmz.entity.Major_to_banji"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO major_to_banji SET
+		major_id = #{major_id}, banji_id =#{banji_id}
+	</insert>
+
+<delete id="banji_to_studentdelete" parameterType="int">
+		delete from banji_to_student where id=#{id}
+	</delete>
+
+</mapper>

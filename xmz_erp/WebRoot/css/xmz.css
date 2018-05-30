@@ -1,0 +1,41 @@
+/* 
+* @Author: Marte
+* @Date:   2017-09-27 08:31:50
+* @Last Modified by:   Marte
+* @Last Modified time: 2017-09-27 10:12:48
+*/
+.xmz_a{
+  cursor: pointer;
+  
+}
+.xmz_a:hover{
+  text-decoration : underline ;
+}
+
+
+}
+.xmz_btn_d{
+	color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.xmz_btn_d:hover{
+	
+    background-color: #d9534f;
+  
+	
+}
+.xmz_btn_info{
+	background-color: #22A7F0;
+    color: #FFF;
+    border-color: #22A7F0;
+}
+.xmz_btn_info:hover{
+	color: #FFF;
+	background-color: #1673a7;
+}
+
+
+
+
+

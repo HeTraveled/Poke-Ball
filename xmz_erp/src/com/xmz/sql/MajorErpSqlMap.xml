@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.xmz.dao.MajorErpDao">
+	<!-- 缓存配置 -->
+	<cache eviction="LRU" flushInterval="30000" size="512" readOnly="true" />
+
+	<!-- select元素，在此元素内写查询语句,resultType:结果类型 -->
+	
+	<select id="findMajorAll" resultType="com.xmz.entity.Major" flushCache="true">
+		select * from major
+	</select>
+	<select id="findByMajorHackfan" parameterType="int" resultType="com.xmz.entity.Major" flushCache="true">
+		select * from major where id=#{id}
+	</select>
+	<select id="findByMajorName" parameterType="string" resultType="com.xmz.entity.Major" flushCache="true">
+		select * from major where name=#{name}
+	</select>
+	<select id="findByMajorName2" parameterType="string" resultType="com.xmz.entity.Major" flushCache="true">
+		select * from major where name=#{name}
+	</select>
+	<select id="findByMajorId" parameterType="int" resultType="com.xmz.entity.Major" flushCache="true">
+		select * from major where id=#{id}
+	</select>
+	<!--guanlian  -->
+	<select id="findGMajorAll" parameterType="int" resultType="com.xmz.entity.Major" flushCache="true">
+		SELECT * FROM major WHERE id in(SELECT major_id FROM grade_to_major WHERE grade_id=#{id})
+	</select>
+	<insert id="majorsave" parameterType="com.xmz.entity.Major"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into major
+		(id,name)
+		values(#{id},#{name})
+	</insert>
+	<delete id="majordelete" parameterType="int">
+		delete from major where id=#{id}
+	</delete>
+	<delete id="majorbanjidelete" parameterType="int">
+		delete from major_to_banji where id=#{id}
+	</delete>
+	
+	<delete id="majorcoursedelete" parameterType="int">
+		delete from major_to_course where id=#{id}
+	</delete>
+	<update id="majorupdate" parameterType="com.xmz.entity.Major">
+		update major
+		<set>
+			<if test="name!=null">
+				name=#{name}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="findByMajorid" parameterType="int" resultType="com.xmz.entity.Course" flushCache="true">
+		<!-- select * from 查询的主表 as (附表名) left join 结果附表 (结果附表名) on 链接条件 where 
+			约束条件 -->
+		<!-- select * from enterprise_to_job etj left outer join job j on etj.enterprise_id=#{id} 
+			where etj.id = #{id} -->
+		select * from major_to_course as m left join course c on m.course_id =c.id
+		where m.major_id=#{id}
+	</select>
+	
+	<select id="findByMajorbid" parameterType="int" resultType="com.xmz.entity.Banji" flushCache="true">
+		<!-- select * from 查询的主表 as (附表名) left join 结果附表 (结果附表名) on 链接条件 where 
+			约束条件 -->
+		<!-- select * from enterprise_to_job etj left outer join job j on etj.enterprise_id=#{id} 
+			where etj.id = #{id} -->
+		select * from major_to_banji as m left join banji b on m.banji_id =b.id
+		where m.major_id=#{id}
+	</select>
+	<insert id="grade_to_major_binding" parameterType="com.xmz.entity.Grade_to_major"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO grade_to_major SET
+		grade_id = #{grade_id}, major_id =#{major_id}
+	</insert>
+	
+	
+
+
+</mapper>
